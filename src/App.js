@@ -1,23 +1,25 @@
-import logo from './logo.svg';
 import './App.css';
+import ExpenseForm from './ExpenseForm';
+import { useState } from 'react';
+import ExpenseList from './ExpenseList';
+import Filter from './Filter';
 
 function App() {
+  const [expenses, setExpenses] = useState([]);
+  const [filter, setFilter] = useState('all');
+
+  const filteredExpenses = filter === 'all' ? expenses : expenses.filter(exp => exp.category === filter);
+
+  function addExpense(expense) {
+    setExpenses([...expenses, expense]);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Expense Tracker</h1>
+      <ExpenseForm addExpense={addExpense} />
+      <Filter setFilter={setFilter} />
+      <ExpenseList filteredExpenses={filteredExpenses} />
     </div>
   );
 }
